@@ -54,7 +54,7 @@ public class RedLeft extends LinearOpMode {
             deliverPurpleCenter();
             //yellowCenter();
         }
-
+        yellowCenter();
         //deliverYellow();
         //park();
         //RobotLog.i(String.format("Final position %f,%f",fluffy.drive.pose.position.x, fluffy.drive.pose.position.y));
@@ -105,8 +105,9 @@ public class RedLeft extends LinearOpMode {
     public void yellowCenter(){
         Actions.runBlocking(
                 fluffy.drive.actionBuilder(fluffy.drive.pose)
-                        .strafeTo(new Vector2d(30, -.5))
-                        .strafeToLinearHeading(new Vector2d(28.4, -26), Math.toRadians(-89.9))
+                        .strafeToLinearHeading(new Vector2d(65.4, -1.6), Math.toRadians(-89.9))
+                        .strafeToLinearHeading(new Vector2d(48.5, -63.1), Math.toRadians(-89.9))
+                        .strafeToLinearHeading(new Vector2d(17.2, -73.3), Math.toRadians(-89.9))
                         .build());
     }
     public void yellowRight(){
