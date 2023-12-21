@@ -21,7 +21,7 @@ public class TeleFluffy {
     DcMotorEx droneMotor;
     Servo grabberRot, finger, dronePusher, hangerLatch, leftPurple, rightPurple;
 
-    public static double THRESHOLD = .15;
+    public static double THRESHOLD = .05;
     OpMode op;
 
     // Lift Constants//
