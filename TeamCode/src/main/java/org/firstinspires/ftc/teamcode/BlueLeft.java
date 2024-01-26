@@ -11,6 +11,8 @@ import com.qualcomm.robotcore.util.RobotLog;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 /* TODO
    - turn off redFinder when no longer needed.
@@ -47,9 +49,9 @@ public class BlueLeft extends LinearOpMode {
     public void runOpMode() {
         initialize();
 
-        initMenu.add(new MenuItem(3, "Park Loc (L=1 C=2 R=3)", 3, 1, 1));
-        initMenu.add(new MenuItem(2, "Pixel Pos (L=1 R=2)", 2, 1, 1));
-        initMenu.add(new MenuItem(0, "Wait Time (0-12)", 12, 0, 1));
+        initMenu.add(new StringMenuItem("Park Loc", new ArrayList<String>(Arrays.asList("L", "C", "R")), 0));
+        initMenu.add(new StringMenuItem("Pixel Pos", new ArrayList<String> (Arrays.asList("L","R")),0));
+        initMenu.add(new DoubleMenuItem("Wait Time (0-12)", 0,12,0,1));
 
         while (!isStarted() && !isStopRequested()) {
             //currentRecognitions=fluffy.getRecognitions();
@@ -80,7 +82,7 @@ public class BlueLeft extends LinearOpMode {
 
         }
 
-        sleep((long) initMenu.get(2) * 1000);
+        sleep((long)((DoubleMenuItem)initMenu.getItem(2)).getDoubleValue()*1000);
         // JRC: Turn off redFinder at this point.
 
         fluffy.drive.pose = BL_START;
@@ -218,9 +220,8 @@ public class BlueLeft extends LinearOpMode {
         } else {
             destination = fluffy.tagPositions[2].plus(fluffy.DELIVERY_OFFSET);
         }
-        if ((int) initMenu.get(1) == 1) {
-            destination = destination.plus(new Vector2d(0, 4.5));
-
+        if (((StringMenuItem)initMenu.getItem(1)).getStringValue().equals("L")){
+            destination = destination.plus(new Vector2d(0,4.5));
         }
 
         fluffy.raiseLift();
@@ -247,13 +248,14 @@ public class BlueLeft extends LinearOpMode {
                         .lineToX(BL_PARK_BACKUP.position.x)
                         .build());
         fluffy.lowerLift();
-        if ((int)initMenu.get(0) == 1){
+        String s = ((StringMenuItem)initMenu.getItem(0)).getStringValue();
+        if (s.equals("L")){
             Actions.runBlocking(
                     fluffy.drive.actionBuilder(fluffy.drive.pose)
                             .strafeTo(BL_PARK_FINAL_LEFT.position)
                             .build());
         }
-        else if ((int)initMenu.get(0) == 2){
+        else if (s.equals("C")){
             Actions.runBlocking(
                     fluffy.drive.actionBuilder(fluffy.drive.pose)
                             .strafeTo(BL_PARK_FINAL_CENTER.position)

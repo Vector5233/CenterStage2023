@@ -19,66 +19,64 @@ import java.util.ArrayList;
 */
 
 public class Menu {
-
     LinearOpMode parent;
     ArrayList<MenuItem> items = new ArrayList<>();
+
     int menuActiveItem = 0;
+
     boolean buttonPressed = false;
 
-    public Menu(LinearOpMode p) {
-        parent = p;
-    }
+    public Menu(LinearOpMode p) {parent = p;}
 
-    public void add(MenuItem m) {
-        items.add(m);
-    }
+    public void add(MenuItem m) { items.add(m); }
 
     public void display() {
-        int i;
-        for (i=0; i<items.size(); i++) {
+
+        for (int i = 0; i<items.size(); i++) {
             if (i == menuActiveItem) {
-                parent.telemetry.addLine(">"+items.get(i).getRepr());
+                parent.telemetry.addLine(">>> "+items.get(i).getRepr());
             }
             else {
                 parent.telemetry.addLine(items.get(i).getRepr());
             }
         }
-        //parent.telemetry.update();
     }
 
     public void update() {
-        double joystickThreshold = 0.20;
+        double JOYSTICK_THRESHOLD = 0.10;
         int delay = 250;
-        if ((parent.gamepad1.right_stick_y > joystickThreshold)||parent.gamepad1.a) {
+        if ((parent.gamepad1.right_stick_y > JOYSTICK_THRESHOLD) || parent.gamepad1.a) {
             items.get(menuActiveItem).down();
             parent.sleep(delay);
         }
-        else if((parent.gamepad1.right_stick_y < -joystickThreshold)||parent.gamepad1.y) {
-            items.get(menuActiveItem).up();
+        else if ((parent.gamepad1.right_stick_y < -JOYSTICK_THRESHOLD) || parent.gamepad1.y) {
+            items.get(menuActiveItem).down();
             parent.sleep(delay);
         }
-        else if(parent.gamepad1.b && !buttonPressed) {
+
+        else if (parent.gamepad1.b && !buttonPressed) {
             menuActiveItem++;
-            if (menuActiveItem >= items.size()) {
+            if (menuActiveItem>=items.size()) {
                 menuActiveItem = 0;
             }
             buttonPressed = true;
             parent.sleep(delay);
         }
-        else if(parent.gamepad1.x && !buttonPressed) {
+
+        else if (parent.gamepad1.x && !buttonPressed) {
             menuActiveItem--;
-            if (menuActiveItem < 0) {
+            if (menuActiveItem<0) {
                 menuActiveItem = items.size() - 1;
             }
             buttonPressed = true;
             parent.sleep(delay);
         }
-        else {
-            buttonPressed = false;
-        }
+        else { buttonPressed = false; };
+
     }
 
-    public double get(int index) {
-        return items.get(index).getValue();
+    public MenuItem getItem(int index) {
+        return items.get(index);
     }
+
 }
