@@ -50,7 +50,7 @@ public class Menu {
             parent.sleep(delay);
         }
         else if ((parent.gamepad1.right_stick_y < -JOYSTICK_THRESHOLD) || parent.gamepad1.y) {
-            items.get(menuActiveItem).down();
+            items.get(menuActiveItem).up();
             parent.sleep(delay);
         }
 

@@ -81,7 +81,11 @@ public class RedLeft extends LinearOpMode {
             telemetry.update();
         }
 
-        sleep((long)((DoubleMenuItem)initMenu.getItem(2)).getDoubleValue()*1000);
+        DoubleMenuItem m = (DoubleMenuItem)initMenu.getItem(2);
+        Double sleepTime = m.getDoubleValue();
+        long sleepLong = sleepTime.longValue();
+
+        sleep(sleepLong*1000);
 
         // JRC: Turn off redFinder at this point.
         fluffy.drive.pose = RL_START;
