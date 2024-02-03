@@ -11,7 +11,6 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.RobotLog;
 
@@ -53,7 +52,7 @@ public class AutoFluffy {
     public static double LEFT_PURPLE_INIT = LEFT_PURPLE_GRAB;
     public static double RIGHT_PURPLE_INIT = RIGHT_PURPLE_GRAB;
     public static int LIFT_UP = 300;//changed from 300 during comp  //fix values
-    public static int LIFT_UP_HIGH = 360;
+    public static int LIFT_UP_HIGH = 400;
     public static int LIFT_DOWN = 0;  //fix values
     public static double LIFT_POWER = 1;  //fix values
     public static int FINGER_UP_WAIT = 500;

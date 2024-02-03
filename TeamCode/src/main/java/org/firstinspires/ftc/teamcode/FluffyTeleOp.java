@@ -55,7 +55,6 @@ public class FluffyTeleOp extends OpMode {
         setLauncher();
         setLauncher();
         setSlowApproach();
-        myBot.setDistanceLeds();
     }
 
     public void setTeleOpDrive(){
