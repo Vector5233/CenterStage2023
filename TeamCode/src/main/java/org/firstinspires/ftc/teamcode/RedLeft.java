@@ -207,11 +207,11 @@ public class RedLeft extends LinearOpMode {
         sleep(1000);
         fluffy.drive.pose = fluffy.getPoseFromAprilTag();
         if (PATH.equals("Left")) {
-            destination = fluffy.tagPositions[3].plus(fluffy.DELIVERY_OFFSET);
+            destination = fluffy.tagPositions[3].plus(fluffy.DELIVERY_OFFSET_RED);
         } else if (PATH.equals("Center")) {
-            destination = fluffy.tagPositions[4].plus(fluffy.DELIVERY_OFFSET);
+            destination = fluffy.tagPositions[4].plus(fluffy.DELIVERY_OFFSET_RED);
         } else {
-            destination = fluffy.tagPositions[5].plus(fluffy.DELIVERY_OFFSET);
+            destination = fluffy.tagPositions[5].plus(fluffy.DELIVERY_OFFSET_RED);
         }
         if (((StringMenuItem)initMenu.getItem(1)).getStringValue().equals("L")){
             destination = destination.plus(new Vector2d(0,4.5));
