@@ -15,6 +15,9 @@ public class Joystick extends OpMode {
     public double leftFrontPower;
     public double rightBackPower;
     public double leftBackPower;
+    public final double DRONE_POWER = 0.5;
+    public final double DRONE_STOP_POWER = 0;
+
     public void init(){
         droneMotor = hardwareMap.dcMotor.get("droneMotor");
         leftFront = hardwareMap.dcMotor.get("leftFront");
@@ -27,11 +30,20 @@ public class Joystick extends OpMode {
     }
 
     public void loop(){
-        if(gamepad1.a){
-            droneMotor.setPower(1);
+        checkDrone();
+        setDrivePower();
+
+    }
+
+    public void checkDrone(){
+        if(gamepad1.b){
+            droneMotor.setPower(DRONE_POWER);
         } else {
-            droneMotor.setPower(0);
+            droneMotor.setPower(DRONE_STOP_POWER);
         }
+    }
+
+    public void setDrivePower(){
         forward = -gamepad1.left_stick_y;
         strafe = gamepad1.left_stick_x;
         turn = gamepad1.right_stick_x;
@@ -43,5 +55,8 @@ public class Joystick extends OpMode {
         rightBack.setPower(rightBackPower);
         leftFront.setPower(leftFrontPower);
         rightFront.setPower(rightFrontPower);
+
+
+
     }
 }
