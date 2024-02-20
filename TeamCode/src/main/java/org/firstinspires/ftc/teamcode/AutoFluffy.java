@@ -275,6 +275,18 @@ public class AutoFluffy {
             op.sleep(1);
         }
     }
+    public void sendLiftToPosition(int position) {
+        liftMotor.setTargetPosition(position);
+        liftMotor.setPower(LIFT_POWER);
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void setLiftPower(double power) {
+        liftMotor.setPower(power);
+    }
+    public int getLiftPosition() {
+        return liftMotor.getCurrentPosition();
+    }
     public void raiseLiftHigh(){
         blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.GOLD);
         liftMotor.setTargetPosition(LIFT_UP_HIGH);
