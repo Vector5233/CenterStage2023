@@ -12,6 +12,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 import org.checkerframework.checker.units.qual.A;
@@ -25,51 +26,48 @@ public class ActionsTest extends LinearOpMode {
     public void runOpMode() {
         initialize();
         waitForStart();
-        Actions.runBlocking(trajectory1);
-        //Actions.runBlocking(trajectory2);
-        Actions.runBlocking(new ParallelAction(new RaiseLift2(),
-                trajectory3));
-        /* This third action does not execute properly */
+        Actions.runBlocking(new RaiseLift(500));
+        sleep(3000);
+        Actions.runBlocking(new RaiseLift(0, 0.3));
+
     }
 
     public class RaiseLift implements Action {
+        int targetPosition = LIFT_POSITION;   // == 400 ticks
+        double power = fluffy.LIFT_POWER;
+        public RaiseLift() {   // allow for default value
+        }
+
+        public RaiseLift(int target) {
+            this.targetPosition = target;
+        }
+
+        public RaiseLift(int target, double power) {
+            this.targetPosition = target;
+            this.power = power;
+        }
         @Override
         public boolean run(@NonNull TelemetryPacket t) {
-            fluffy.sendLiftToPosition(LIFT_POSITION);
-            return false;
+            boolean initialized = false;
+            if (!initialized) {
+                initialized = true;
+                fluffy.sendLiftToPosition(targetPosition, power);
+            }
+            t.put("Lift position: ", fluffy.getLiftPosition());
+            t.put("Target: ", targetPosition);
+            telemetry.update();
+            return fluffy.isLiftBusy();
         }
+
+
     }
 
-    public class RaiseLift2 implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket t) {
-            if (fluffy.getLiftPosition() < LIFT_POSITION) {
-                fluffy.setLiftPower(0.3);
-                return true;
-            }
-            else {
-                fluffy.setLiftPower(0.0);
-                return false;
-            }
-        }
-    }
+
 
     public void initialize() {
         fluffy = new AutoFluffy(this);
         fluffy.drive.pose = new Pose2d(0,0,0);
-        trajectory1 = fluffy.drive.actionBuilder(fluffy.drive.pose)
-                .lineToX(48)
-                .afterDisp(24, new InstantAction(() -> fluffy.raiseFinger()))
-                .build();
-        trajectory2 = fluffy.drive.actionBuilder(new Pose2d(48,0,0))   // NOTE: must be continuous with
-                // projected location or bot will first try to drive to given pose ^^^
-                .strafeTo(new Vector2d(48,6))
-                .afterTime(1.0, new InstantAction(()-> fluffy.raiseLift()))
-                .waitSeconds(1)
-                .build();
-        trajectory3 = fluffy.drive.actionBuilder(new Pose2d(48,0,0))
-                .strafeTo(new Vector2d(48,18))
-                .build();
+
 
     }
 }

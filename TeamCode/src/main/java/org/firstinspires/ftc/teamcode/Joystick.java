@@ -17,6 +17,8 @@ public class Joystick extends OpMode {
     public double leftBackPower;
     public final double DRONE_POWER = 0.5;
     public final double DRONE_STOP_POWER = 0;
+    public final double THRESHOLD = 0.03;
+    public boolean DRIVE_MODE = true;
 
     public void init(){
         droneMotor = hardwareMap.dcMotor.get("droneMotor");
@@ -26,13 +28,16 @@ public class Joystick extends OpMode {
         rightBack = hardwareMap.dcMotor.get("rightBack");
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
-
     }
 
     public void loop(){
         checkDrone();
-        setDrivePower();
-
+        setDriveMode();
+        if(DRIVE_MODE){
+            setDrivePower();
+        } else{
+            setJoystickPower();
+        }
     }
 
     public void checkDrone(){
@@ -44,9 +49,9 @@ public class Joystick extends OpMode {
     }
 
     public void setDrivePower(){
-        forward = -gamepad1.left_stick_y;
-        strafe = gamepad1.left_stick_x;
-        turn = gamepad1.right_stick_x;
+        forward = checkThreshold(-gamepad1.left_stick_y);
+        strafe = checkThreshold(gamepad1.left_stick_x);
+        turn = checkThreshold(gamepad1.right_stick_x);
         leftBackPower = (forward - strafe + turn);
         rightBackPower = (forward + strafe - turn);
         rightFrontPower = (forward - strafe - turn);
@@ -55,8 +60,34 @@ public class Joystick extends OpMode {
         rightBack.setPower(rightBackPower);
         leftFront.setPower(leftFrontPower);
         rightFront.setPower(rightFrontPower);
+    }
 
+    public double checkThreshold(double power){
+        if(Math.abs(power) < THRESHOLD){
+            power = 0;
+        }
+        return power;
+    }
 
+    public void setJoystickPower(){
+        forward = Math.pow(-gamepad1.left_stick_y, 3);
+        strafe = Math.pow(gamepad1.left_stick_x, 3);
+        turn = Math.pow(gamepad1.right_stick_x,3);
+        leftBackPower = (forward - strafe + turn);
+        rightBackPower = (forward + strafe - turn);
+        rightFrontPower = (forward - strafe - turn);
+        leftFrontPower = (forward + strafe + turn);
+        leftBack.setPower(leftBackPower);
+        rightBack.setPower(rightBackPower);
+        leftFront.setPower(leftFrontPower);
+        rightFront.setPower(rightFrontPower);
+    }
 
+    public void setDriveMode(){
+        if(gamepad1.x){
+            DRIVE_MODE = true;
+        }else if(gamepad1.y){
+            DRIVE_MODE = false;
+        }
     }
 }

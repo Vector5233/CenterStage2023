@@ -278,9 +278,17 @@ public class AutoFluffy {
     public void sendLiftToPosition(int position) {
         liftMotor.setTargetPosition(position);
         liftMotor.setPower(LIFT_POWER);
-        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
+    public void sendLiftToPosition(int position, double power) {
+        liftMotor.setTargetPosition(position);
+        liftMotor.setPower(power);
+    }
+
+    public boolean isLiftBusy() {
+        return liftMotor.isBusy();
+    }
     public void setLiftPower(double power) {
         liftMotor.setPower(power);
     }
